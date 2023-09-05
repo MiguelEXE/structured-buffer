@@ -1,0 +1,19 @@
+{
+  "name": "structured-buffer",
+  "description": "Structed-based buffers",
+  "version": "1.0.0",
+  "main": "lib.js",
+  "license": "MIT",
+  "dependencies": {
+    "smart-buffer": "^4.2.0"
+  },
+  "author": {
+    "name": "MiguelEXE",
+    "url": "https://github.com/MiguelEXE"
+  },
+  "keywords": ["buffer","structure","struct","c"],
+  "homepage": "https://github.com/MiguelEXE/structured-buffer",
+  "bugs": {
+    "url": "https://github.com/MiguelEXE/structured-buffer/issues"
+  }
+}
