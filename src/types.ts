@@ -73,6 +73,7 @@ export { isCountedType };
 
 interface Struct<T extends string | number | bigint>{
     [key: string]: CountedType<T> | Struct<T>;
+    [isCountedType]: never;
 }
 
 export type { Type, CountedType, ParserFunction, SingleType, Struct };
