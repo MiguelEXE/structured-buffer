@@ -12,6 +12,9 @@ type SingleType<T> = (count: number) => CountedType<T>;
 type Type<T> = SingleType<T> & CountedType<T>;
 function createType<T>(type: ParserFunction<T>): Type<T> {
     function singleTypeFunc(count: number): CountedType<T>{
+        if(count < 1){
+            throw new RangeError("count cannot be less than 1");
+        }
         return {
             count,
             parser: type,
