@@ -1,4 +1,5 @@
 import { SmartBuffer } from "smart-buffer";
+import {ok as assert} from "assert/strict";
 
 const isCountedType: unique symbol = Symbol("IS_COUNTED_TYPE");
 
@@ -14,9 +15,7 @@ type SingleType<T> = (count: number) => CountedType<T>;
 type Type<T> = SingleType<T> & CountedType<T>;
 function createType<T>(parser: ParserFunction<T>, writer: WriterFunction<T>): Type<T> {
     function singleTypeFunc(count: number): CountedType<T>{
-        if(count < 1){
-            throw new RangeError("count cannot be less than 1");
-        }
+        assert(count > 0, new RangeError("Count needs to be greather than zero"));
         return {
             count,
             parser,
