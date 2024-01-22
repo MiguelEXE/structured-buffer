@@ -1,5 +1,5 @@
 import { SmartBuffer } from "smart-buffer";
-import  {isCountedType } from "./types";
+import { isCountedType } from "./types";
 import type { Struct } from "./types";
 
 // values is a array that all members is a bigint, number a string but not a mix between those types
