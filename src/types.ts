@@ -1,5 +1,5 @@
 import { SmartBuffer } from "smart-buffer";
-import {ok as assert} from "assert/strict";
+import { ok as assert } from "assert/strict";
 
 const isCountedType: unique symbol = Symbol("IS_COUNTED_TYPE");
 
