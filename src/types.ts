@@ -1,10 +1,12 @@
 import { SmartBuffer } from "smart-buffer";
 
+const isCountedType = Symbol("IS_COUNTED_TYPE");
+
 type ParserFunction<T> = (smartBuf: SmartBuffer) => T;
 interface CountedType<T> {
     count: number;
     parser: ParserFunction<T>;
-    isCountedType: boolean;
+    [isCountedType]: boolean;
 }
 type SingleType<T> = (count: number) => CountedType<T>;
 type Type<T> = SingleType<T> & CountedType<T>;
@@ -13,12 +15,12 @@ function createType<T>(type: ParserFunction<T>): Type<T> {
         return {
             count,
             parser: type,
-            isCountedType: true
+            [isCountedType]: true
         }
     }
     singleTypeFunc.count = 1;
     singleTypeFunc.parser = type;
-    singleTypeFunc.isCountedType = true;
+    singleTypeFunc[isCountedType] = true;
     return singleTypeFunc;
 }
 
@@ -67,6 +69,7 @@ export const int64_be = createType((smartBuf: SmartBuffer): bigint => {
 export const char = createType((smartBuf: SmartBuffer): string => {
     return smartBuf.readString(1);
 });
+export { isCountedType };
 
 interface Struct<T extends string | number | bigint>{
     [key: string]: CountedType<T> | Struct<T>;
