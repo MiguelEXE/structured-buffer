@@ -28,7 +28,6 @@ function parse<T extends string | number | bigint>(struct: Struct<T>, buf: Buffe
                 values.push(value);
             }
             result[key] = aggregate(values, type.count);
-            continue;
         }else{
             result[key] = parse(type, smartBuf);
         }
