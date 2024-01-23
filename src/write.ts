@@ -39,6 +39,13 @@ function checkType(struct: Struct<string | number | bigint> | CountedType<string
         }
     }
 }
+/**
+ * Transforms `object` into a buffer using `struct` as template
+ * @param struct Struct which the writer will use to write the buffer
+ * @param object `struct`-alike structure but with values properly declared
+ * @param __checkType DO NOT DECLARE THIS VALUE. If defined, will not check if `object` is respecting `struct` structure
+ * @returns A buffer which corresponds to the `struct` structure with `object` values
+ */
 function write(struct: Struct<bigint | number | string>, object: StructObject<bigint | number | string | (number | string)[]>, __checkType?: boolean): Buffer{
     const smartBuf = new SmartBuffer();
     if(__checkType !== false) checkType(struct, object, undefined);
