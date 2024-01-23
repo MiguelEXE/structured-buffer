@@ -63,7 +63,7 @@ function write(struct: Struct, object: StructObject, __checkType?: boolean): Buf
                 value.writer(smartBuf, args[i]);
             }
         }else{
-            write(value, object[key] as StructObject, false);
+            smartBuf.writeBuffer(write(value, object[key] as StructObject, false));
         }
     }
     return smartBuf.toBuffer();
