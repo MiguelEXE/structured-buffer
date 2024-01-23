@@ -1,5 +1,4 @@
-import { write, parse, char, uint8 } from "../src/lib";
-const bool = uint8; // as of v2.0.0, theres no such a thing as booleans
+import { write, parse, char, uint8, bool } from "../src/lib";
 
 enum Emotion {
     Happy = 0x0,
@@ -26,7 +25,7 @@ const dog = {
         name: "Cupcake\0\0\0\0\0\0\0\0\0\0\0\0\0",
         emotion: Emotion.Happy
     },
-    isBarking: 0
+    isBarking: false
 };
 console.log(write(Canine, dog));
 console.log(parse(Feline, Buffer.of(67, 97, 116, 0, 0, 0, 0, 0, 0, 0, 66, 117, 114, 103, 101, 114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1)));
