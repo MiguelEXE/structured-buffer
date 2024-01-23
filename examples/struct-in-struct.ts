@@ -24,8 +24,8 @@ const Feline = {
 
 const dog = {
     animal: {
-        type: "Dog\0\0\0\0\0\0\0",
-        name: "Cupcake\0\0\0\0\0\0\0\0\0\0\0\0\0",
+        type: "Dog".padEnd(10, "\0"),
+        name: "Cupcake".padEnd(20, "\0"),
         emotion: Emotion.Happy
     },
     isBarking: false
