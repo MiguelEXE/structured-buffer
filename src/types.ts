@@ -167,7 +167,7 @@ export const bool = createType((smartBuf: SmartBuffer): boolean => { // Reading 
 }, function(smartBuf, value){
     smartBuf.writeUInt8(value ? __true : __false);
 }, "boolean", 1);
-export { isCountedType, __true, __false };
+export { isCountedType };
 
 interface Struct{
     [key: string]: CountedType<string> | CountedType<bigint> | CountedType<number> | CountedType<boolean> | Struct;
