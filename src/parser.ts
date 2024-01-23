@@ -1,5 +1,6 @@
 import { SmartBuffer } from "smart-buffer";
 import { isCountedType } from "./types";
+import { default as sizeof } from "./sizeof"
 import type { Struct } from "./types";
 
 // values is a array that all members is a bigint, number a string but not a mix between those types
@@ -19,10 +20,14 @@ function aggregate(values: (bigint | number | string)[], count: number | undefin
  * Parses a buffer using `struct` as a template
  * @param struct Struct which the parser will use as template to parse `buf`
  * @param buf Buffer or SmartBuffer instance which will be used
+ * @param __checkSize DO NOT DECLARE THIS VALUE. If false, will not check if the size of struct is greater than the length of `buf`
  * @returns `struct`-alike object but with all the types converted to it's respectfully values
  */
-function parse(struct: Struct, buf: Buffer | SmartBuffer){
+function parse(struct: Struct, buf: Buffer | SmartBuffer, __checkSize?: boolean){
     const smartBuf = (buf instanceof SmartBuffer) ? buf : SmartBuffer.fromBuffer(buf);
+    if(__checkSize !== false && sizeof(struct) > smartBuf.length){
+        throw new RangeError("Size of struct is greater than length of buffer");
+    }
     const result = {};
     for(const key in struct){
         const structOrType = struct[key];
