@@ -6,7 +6,7 @@ import type { Struct } from "./types";
 // values is a array that all members is a bigint, number a string but not a mix between those types
 // if count is undefined that means the code should not expect a array coming out of it, instead it should expect an string (in C, a char) | bigint | number
 // or else it will receive a string (in C, a char[]) | (bigint | number)[]
-function aggregate(values: (bigint | number | string)[], count: number | undefined): string | bigint | number | (bigint | number)[]{
+function aggregate(values: (bigint | number | string | boolean)[], count: number | undefined): string | boolean | bigint | number | (bigint | number | boolean)[]{
     if(count === undefined){
         return values[0];
     }

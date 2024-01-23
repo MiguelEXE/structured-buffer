@@ -4,11 +4,11 @@ import { notStrictEqual, deepStrictEqual, ok as assert } from "assert/strict";
 import type { Struct, CountedType } from "./types";
 
 interface StructObject{
-    [key: string]: string | number | bigint | (number | string)[] | StructObject;
+    [key: string]: string | number | bigint | boolean | (number | boolean | bigint)[] | StructObject;
 }
 // i know that this is gore code but i dont know how to break down this function so... take this
 // check if object is typed well with struct
-function checkType(struct: Struct | CountedType<string | number | bigint>, object: StructObject, fromKey: string | undefined): void{
+function checkType(struct: Struct | CountedType<string | number | bigint | boolean>, object: StructObject, fromKey: string | undefined): void{
     for(const key in object){
         const value = struct[key] as Struct | CountedType<string | number | bigint> | undefined;
         const keyPad = (key !== undefined) ? `[${JSON.stringify(key)}]` : "";
