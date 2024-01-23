@@ -1,3 +1,6 @@
+// run this code using:
+// - npx tsx examples/struct-in-struct.ts
+// - yarn tsx examples/struct-in-struct.ts
 import { write, parse, char, uint8, bool } from "../src/lib";
 
 enum Emotion {
