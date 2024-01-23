@@ -39,6 +39,12 @@ function checkType(struct: Struct | CountedType<string | number | bigint>, objec
         }
     }
 }
+function toArray(value: string | bigint | number | (bigint | number)[]){
+    if(typeof(value) === "string"){ // both char and char() works since char can be a string of length 1 and char() can be a string of any length
+        return value;
+    }
+    return Array.isArray(value) ? value : [value];
+}
 /**
  * Transforms `object` into a buffer using `struct` as template
  * @param struct Struct which the writer will use to write the buffer
@@ -52,7 +58,7 @@ function write(struct: Struct, object: StructObject, __checkType?: boolean): Buf
     for(const key in object){
         const value = struct[key] as Struct | CountedType<string | number | bigint>;
         if(isCountedType in value){
-            const args = Array.isArray(object[key]) ? object[key] : [object[key]];
+            const args = toArray(object[key] as string | number | bigint | (bigint | number)[]);
             for(let i=0;i<(value.count ?? 1);i++){
                 value.writer(smartBuf, args[i]);
             }
