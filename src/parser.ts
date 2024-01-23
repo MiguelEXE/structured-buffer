@@ -25,17 +25,17 @@ function parse(struct: Struct, buf: Buffer | SmartBuffer){
     const smartBuf = (buf instanceof SmartBuffer) ? buf : SmartBuffer.fromBuffer(buf);
     const result = {};
     for(const key in struct){
-        const type = struct[key];
+        const structOrType = struct[key];
         
-        if(isCountedType in type){
+        if(isCountedType in structOrType){ // Here the structOrType is a CountedType
             const values = [];
-            for(let i=0;i<(type.count ?? 1);i++){
-                const value = type.parser(smartBuf);
+            for(let i=0;i<(structOrType.count ?? 1);i++){
+                const value = structOrType.parser(smartBuf);
                 values.push(value);
             }
-            result[key] = aggregate(values, type.count);
-        }else{
-            result[key] = parse(type, smartBuf);
+            result[key] = aggregate(values, structOrType.count);
+        }else{ // Here the structOrType is a Struct
+            result[key] = parse(structOrType, smartBuf);
         }
     }
     return result;

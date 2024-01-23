@@ -56,14 +56,14 @@ function write(struct: Struct, object: StructObject, __checkType?: boolean): Buf
     const smartBuf = new SmartBuffer();
     if(__checkType !== false) checkType(struct, object, undefined);
     for(const key in object){
-        const value = struct[key] as Struct | CountedType<string | number | bigint>;
-        if(isCountedType in value){
+        const structOrType = struct[key] as Struct | CountedType<string | number | bigint>;
+        if(isCountedType in structOrType){ // Here the structOrType is a CountedType
             const args = toArray(object[key] as string | number | bigint | (bigint | number)[]);
-            for(let i=0;i<(value.count ?? 1);i++){
-                value.writer(smartBuf, args[i]);
+            for(let i=0;i<(structOrType.count ?? 1);i++){
+                structOrType.writer(smartBuf, args[i]);
             }
-        }else{
-            smartBuf.writeBuffer(write(value, object[key] as StructObject, false));
+        }else{ // Here the structOrType is a Struct
+            smartBuf.writeBuffer(write(structOrType, object[key] as StructObject, false));
         }
     }
     return smartBuf.toBuffer();
