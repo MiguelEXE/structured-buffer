@@ -9,13 +9,13 @@ interface CountedType<T> {
     count: number | undefined;
     parser: ParserFunction<T>;
     writer: WriterFunction<T>;
-    valueType: "string" | "bigint" | "number";
+    valueType: "string" | "bigint" | "number" | "boolean";
     byteLength: number;
     [isCountedType]: any;
 }
 type SingleType<T> = (count: number) => CountedType<T>;
 type Type<T> = SingleType<T> & CountedType<T>;
-function createType<T>(parser: ParserFunction<T>, writer: WriterFunction<T>, valueType: "string" | "bigint" | "number", byteLength: number): Type<T> {
+function createType<T>(parser: ParserFunction<T>, writer: WriterFunction<T>, valueType: "string" | "bigint" | "number" | "boolean", byteLength: number): Type<T> {
     function singleTypeFunc(count: number): CountedType<T>{
         assert(count > 0, new RangeError("Count needs to be greather than zero"));
         return {
@@ -35,6 +35,9 @@ function createType<T>(parser: ParserFunction<T>, writer: WriterFunction<T>, val
     singleTypeFunc[isCountedType] = true;
     return singleTypeFunc;
 }
+
+const __true = 1;
+const __false = 0;
 
 /**
  * Unsigned 8-bit integer
@@ -149,17 +152,25 @@ export const int64_be = createType((smartBuf: SmartBuffer): bigint => {
     smartBuf.writeBigInt64BE(value);
 }, "bigint", 8);
 /**
- * A string version of `uint8`
+ * A string version of `int8`
  */
 export const char = createType((smartBuf: SmartBuffer): string => {
     return smartBuf.readString(1);
 }, function(smartBuf, value){
     smartBuf.writeString(value);
 }, "string", 1);
-export { isCountedType };
+/**
+ * Standard C99 bool
+ */
+export const bool = createType((smartBuf: SmartBuffer): boolean => { // Reading or writing UInt8 doesnt matter since we are comparing with not strict equal operator/writing 1 (__true) or 0 (__false)
+    return smartBuf.readUInt8() !== __false;
+}, function(smartBuf, value){
+    smartBuf.writeUInt8(value ? __true : __false);
+}, "boolean", 1);
+export { isCountedType, __true, __false };
 
 interface Struct{
-    [key: string]: CountedType<string> | CountedType<bigint> | CountedType<number> | Struct;
+    [key: string]: CountedType<string> | CountedType<bigint> | CountedType<number> | CountedType<boolean> | Struct;
 }
 
 export type { Type, CountedType, ParserFunction, SingleType, Struct };
