@@ -21,7 +21,7 @@ function aggregate(values: (bigint | number | string)[], count: number | undefin
  * @param buf Buffer or SmartBuffer instance which will be used
  * @returns `struct`-alike object but with all the types converted to it's respectfully values
  */
-function parse<T extends string | number | bigint>(struct: Struct<T>, buf: Buffer | SmartBuffer){
+function parse(struct: Struct, buf: Buffer | SmartBuffer){
     const smartBuf = (buf instanceof SmartBuffer) ? buf : SmartBuffer.fromBuffer(buf);
     const result = {};
     for(const key in struct){

@@ -3,14 +3,14 @@ import { isCountedType } from "./types";
 import { notStrictEqual, deepStrictEqual, ok as assert } from "assert/strict";
 import type { Struct, CountedType } from "./types";
 
-interface StructObject<T extends string | number | bigint | (number | string)[]>{
-    [key: string]: T | StructObject<T>;
+interface StructObject{
+    [key: string]: string | number | bigint | (number | string)[] | StructObject;
 }
 // i know that this is gore code but i dont know how to break down this function so... take this
 // check if object is typed well with struct
-function checkType(struct: Struct<string | number | bigint> | CountedType<string | number | bigint>, object: StructObject<bigint | number | string | (number | string)[]>, fromKey: string | undefined): void{
+function checkType(struct: Struct | CountedType<string | number | bigint>, object: StructObject, fromKey: string | undefined): void{
     for(const key in object){
-        const value = struct[key] as Struct<string | number | bigint> | CountedType<string | number | bigint> | undefined;
+        const value = struct[key] as Struct | CountedType<string | number | bigint> | undefined;
         const keyPad = (key !== undefined) ? `[${JSON.stringify(key)}]` : "";
         notStrictEqual(value, undefined, new TypeError(`Value of struct${keyPad} is undefined.`));
         if(isCountedType in value){
@@ -35,7 +35,7 @@ function checkType(struct: Struct<string | number | bigint> | CountedType<string
             }
         }else{
             deepStrictEqual(typeof(object[key]), "object", new TypeError("Expected object."));
-            checkType(value, object[key] as StructObject<bigint | number | string>, key);
+            checkType(value, object[key] as StructObject, key);
         }
     }
 }
@@ -46,18 +46,18 @@ function checkType(struct: Struct<string | number | bigint> | CountedType<string
  * @param __checkType DO NOT DECLARE THIS VALUE. If defined, will not check if `object` is respecting `struct` structure
  * @returns A buffer which corresponds to the `struct` structure with `object` values
  */
-function write(struct: Struct<bigint | number | string>, object: StructObject<bigint | number | string | (number | string)[]>, __checkType?: boolean): Buffer{
+function write(struct: Struct, object: StructObject, __checkType?: boolean): Buffer{
     const smartBuf = new SmartBuffer();
     if(__checkType !== false) checkType(struct, object, undefined);
     for(const key in object){
-        const value = struct[key] as Struct<string | number | bigint> | CountedType<string | number | bigint>;
+        const value = struct[key] as Struct | CountedType<string | number | bigint>;
         if(isCountedType in value){
             const args = Array.isArray(object[key]) ? object[key] : [object[key]];
             for(let i=0;i<(value.count ?? 1);i++){
                 value.writer(smartBuf, args[i]);
             }
         }else{
-            write(value, object[key] as StructObject<bigint | number | string | (number | string)[]>, false);
+            write(value, object[key] as StructObject, false);
         }
     }
     return smartBuf.toBuffer();

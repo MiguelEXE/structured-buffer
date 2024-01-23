@@ -155,8 +155,8 @@ export const char = createType((smartBuf: SmartBuffer): string => {
 }, "string");
 export { isCountedType };
 
-interface Struct<T extends string | number | bigint>{
-    [key: string]: CountedType<T> | Struct<T>;
+interface Struct{
+    [key: string]: CountedType<string> | CountedType<bigint> | CountedType<number> | Struct;
 }
 
 export type { Type, CountedType, ParserFunction, SingleType, Struct };
