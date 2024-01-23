@@ -2,9 +2,9 @@ import { isCountedType } from "./types";
 import type { Struct, CountedType } from "./types";
 
 /**
- * Returns the size of the `something`
+ * Returns the size of `something`
  * @param something A struct or a type
- * @returns The size of the `something` in bytes
+ * @returns The size of `something` in bytes
  */
 function sizeof(something: Struct | CountedType<string | number | bigint | boolean>): number{
     if(isCountedType in something){
