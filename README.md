@@ -2,4 +2,4 @@
 
 C-like structs in javascript
 
-See [./examples](./examples) for examples
+See [https://github.com/MiguelEXE/structured-buffer/tree/master/examples](examples) folder for examples
