@@ -49,7 +49,7 @@ function toArray(value: string | bigint | number | (bigint | number)[]){
  * Transforms `object` into a buffer using `struct` as template
  * @param struct Struct which the writer will use to write the buffer
  * @param object `struct`-alike structure but with values properly declared
- * @param __checkType DO NOT DECLARE THIS VALUE. If defined, will not check if `object` is respecting `struct` structure
+ * @param __checkType DO NOT DECLARE THIS VALUE. If false, will not check if `object` is respecting `struct` structure
  * @returns A buffer which corresponds to the `struct` structure with `object` values
  */
 function write(struct: Struct, object: StructObject, __checkType?: boolean): Buffer{
