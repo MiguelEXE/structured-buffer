@@ -8,4 +8,4 @@ C-like structs in javascript
 - Standard C99 booleans
 - [Structs inside another structs](https://github.com/MiguelEXE/structured-buffer/tree/master/examples/struct-in-struct.ts)
 
-See [https://github.com/MiguelEXE/structured-buffer/tree/master/examples](examples) folder for examples
+See [examples](https://github.com/MiguelEXE/structured-buffer/tree/master/examples) folder for examples
