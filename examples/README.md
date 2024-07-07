@@ -8,3 +8,5 @@
 - [Simple string example](simple-string.ts)
 - [Big endian vs Little endian example](big-vs-little.ts)
 - [Struct inside struct](struct-in-struct.ts)
+- [UNIX unsigned integers](unix-uints.ts)
+- [UNIX signed integers](unix-ints.ts)
