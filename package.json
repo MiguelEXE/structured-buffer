@@ -1,8 +1,8 @@
 {
   "name": "structured-buffer",
   "description": "Structed-based buffers",
-  "version": "2.2.0",
-  "main": "dist/lib.ts",
+  "version": "2.2.1",
+  "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
   "license": "MIT",
   "dependencies": {
