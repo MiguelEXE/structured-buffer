@@ -45,6 +45,8 @@ const __false = 0;
 export const uint8 = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt8();
 }, function(smartBuf, value){
+    assert(value > 0 && value < 256, new Error("Value must be greather than 0 and smaller than 256"));
+    value = Math.round(value);
     smartBuf.writeUInt8(value);
 }, "number", 1);
 /**
@@ -53,6 +55,8 @@ export const uint8 = createType((smartBuf: SmartBuffer): number => {
 export const int8 = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readInt8();
 }, function(smartBuf, value){
+    assert(value > -127 && value < 127, new Error("Value must be greather than -127 and smaller than 127"));
+    value = Math.round(value);
     smartBuf.writeInt8(value);
 }, "number", 1);
 /**
@@ -61,6 +65,8 @@ export const int8 = createType((smartBuf: SmartBuffer): number => {
 export const uint16_be = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt16BE();
 }, function(smartBuf, value){
+    assert(value > 0 && value < 0xFFFF, new Error("Value must be greather than zero and smaller than 65535"));
+    value = Math.round(value);
     smartBuf.writeUInt16BE(value);
 }, "number", 2);
 /**
@@ -69,6 +75,8 @@ export const uint16_be = createType((smartBuf: SmartBuffer): number => {
 export const uint16_le = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt16LE();
 }, function(smartBuf, value){
+    assert(value > 0 && value < 0xFFFF, new Error("Value must be greather than 0 and smaller than 65535"));
+    value = Math.round(value);
     smartBuf.writeUInt16LE(value);
 }, "number", 2);
 /**
@@ -77,6 +85,8 @@ export const uint16_le = createType((smartBuf: SmartBuffer): number => {
 export const int16_le = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readInt16LE();
 }, function(smartBuf, value){
+    assert(value > -32767 && value < 32767, new Error("Value must be greather than -32767 and smaller than 32767"));
+    value = Math.round(value);
     smartBuf.writeInt16LE(value);
 }, "number", 2);
 /**
@@ -85,6 +95,8 @@ export const int16_le = createType((smartBuf: SmartBuffer): number => {
 export const int16_be = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt16BE();
 }, function(smartBuf, value){
+    assert(value > -32767 && value < 32767, new Error("Value must be greather than -32767 and smaller than 32767"));
+    value = Math.round(value);
     smartBuf.writeInt16BE(value);
 }, "number", 2);
 /**
@@ -93,6 +105,8 @@ export const int16_be = createType((smartBuf: SmartBuffer): number => {
 export const uint32_be = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt32BE();
 }, function(smartBuf, value){
+    assert(value > 0 && value < 0xFFFFFFFF, new Error("Value must be greather than 0 and smaller than 4294967295"));
+    value = Math.round(value);
     smartBuf.writeUInt32BE(value);
 }, "number", 4);
 /**
@@ -101,6 +115,8 @@ export const uint32_be = createType((smartBuf: SmartBuffer): number => {
 export const uint32_le = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readUInt32LE();
 }, function(smartBuf, value){
+    assert(value > 0 && value < 0xFFFFFFFF, new Error("Value must be greather than 0 and smaller than 4294967295"));
+    value = Math.round(value);
     smartBuf.writeUInt32LE(value);
 }, "number", 4);
 /**
@@ -109,6 +125,8 @@ export const uint32_le = createType((smartBuf: SmartBuffer): number => {
 export const int32_le = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readInt32LE();
 }, function(smartBuf, value){
+    assert(value > -2147483647 && value < 2147483647, new Error("Value must be greather than -2147483647 and smaller than 2147483647"));
+    value = Math.round(value);
     smartBuf.writeInt32LE(value);
 }, "number", 4);
 /**
@@ -117,6 +135,8 @@ export const int32_le = createType((smartBuf: SmartBuffer): number => {
 export const int32_be = createType((smartBuf: SmartBuffer): number => {
     return smartBuf.readInt32BE();
 }, function(smartBuf, value){
+    assert(value > -2147483647 && value < 2147483647, new Error("Value must be greather than -2147483647 and smaller than 2147483647"));
+    value = Math.round(value);
     smartBuf.writeInt32BE(value);
 }, "number", 4);
 /**
@@ -125,6 +145,7 @@ export const int32_be = createType((smartBuf: SmartBuffer): number => {
 export const uint64_be = createType((smartBuf: SmartBuffer): bigint => {
     return smartBuf.readBigUInt64BE();
 }, function(smartBuf, value){
+    assert(value > 0n && value < 18446744073709551615n, new Error("Value must be greather than 0n and smaller than 18446744073709551615n"));
     smartBuf.writeBigUInt64BE(value);
 }, "bigint", 8);
 /**
@@ -133,6 +154,7 @@ export const uint64_be = createType((smartBuf: SmartBuffer): bigint => {
 export const uint64_le = createType((smartBuf: SmartBuffer): bigint => {
     return smartBuf.readBigUInt64LE();
 }, function(smartBuf, value){
+    assert(value > 0n && value < 18446744073709551615n, new Error("Value must be greather than 0n and smaller than 18446744073709551615n"));
     smartBuf.writeBigUInt64LE(value);
 }, "bigint", 8);
 /**
@@ -141,6 +163,7 @@ export const uint64_le = createType((smartBuf: SmartBuffer): bigint => {
 export const int64_le = createType((smartBuf: SmartBuffer): bigint => {
     return smartBuf.readBigInt64LE();
 }, function(smartBuf, value){
+    assert(value > -9223372036854775807n && value < 9223372036854775807n, new Error("Value must be greather than -9223372036854775807n and smaller than 9223372036854775807n"));
     smartBuf.writeBigInt64LE(value);
 }, "bigint", 8);
 /**
@@ -149,6 +172,7 @@ export const int64_le = createType((smartBuf: SmartBuffer): bigint => {
 export const int64_be = createType((smartBuf: SmartBuffer): bigint => {
     return smartBuf.readBigInt64BE();
 }, function(smartBuf, value){
+    assert(value > -9223372036854775807n && value < 9223372036854775807n, new Error("Value must be greather than -9223372036854775807n and smaller than 9223372036854775807n"));
     smartBuf.writeBigInt64BE(value);
 }, "bigint", 8);
 /**
@@ -183,7 +207,7 @@ export const pdp_uint32 = createType((smartBuf: SmartBuffer): number => {
     const lowShort = smartBuf.readUInt16LE();
     return (highShort << 16) | lowShort;
 }, function(smartBuf, value){
-    assert(value > 0 && value < 0xFFFFFFFF, new Error("Value must be greather than zero and smaller than 4294967295"));
+    assert(value > 0 && value < 0xFFFFFFFF, new Error("Value must be greather than 0 and smaller than 4294967295"));
     value = Math.round(value);
     const high = value >>> 16;
     const low = value & 0x0000FFFF;
