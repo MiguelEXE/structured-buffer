@@ -207,7 +207,6 @@ export const pdp_int32 = createType((smartBuf: SmartBuffer): number => {
     const sign = 1 - ((highShort & 0x8000) >> 15) * 2; // ((highShort & 0x8000) >> 15) * 2 will become 2 if the sign bit is true, otherwise it will become 0
     return (((highShort & 0x7FFF) << 16) | lowShort) * sign;
 }, function(smartBuf, value){
-    console.log(value);
     assert(value > -2147483647 && value < 2147483647, new Error("Value must be greather than -2147483647 and smaller than 2147483647"));
     value = Math.round(value);
 
