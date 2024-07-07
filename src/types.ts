@@ -167,6 +167,56 @@ export const bool = createType((smartBuf: SmartBuffer): boolean => { // Reading 
 }, function(smartBuf, value){
     smartBuf.writeUInt8(value ? __true : __false);
 }, "boolean", 1);
+/**
+ * PDP-11 (UNIX) Unsigned 32-bit integer
+ * 
+ * PDP-11 stores both uint32/int32 (longs) into BE and uint16/int16 (shorts) into LE
+ * 
+ * This creates a situation where the long is split into
+ * two shorts which are stored in BE (high 16 bit short first, low 16 bit short last).
+ * BUT: the shorts are stored as LE
+ * 
+ * This is rarely used because of it's weirdeness, but it is used in CPIO archive format (used in linux kernel bootup)
+ */
+export const pdp_uint32 = createType((smartBuf: SmartBuffer): number => {
+    const highShort = smartBuf.readUInt16LE();
+    const lowShort = smartBuf.readUInt16LE();
+    return (highShort << 16) | lowShort;
+}, function(smartBuf, value){
+    assert(value > 0 && value < 0xFFFFFFFF, new Error("Value must be greather than zero and smaller than 4294967295"));
+    value = Math.round(value);
+    const high = value >>> 16;
+    const low = value & 0x0000FFFF;
+    smartBuf.writeUInt16LE(high);
+    smartBuf.writeUInt16LE(low);
+}, "number", 4);
+/**
+ * PDP-11 (UNIX) Signed 32-bit integer
+ * 
+ * PDP-11 stores both uint32/int32 (longs) into BE and uint16/int16 (shorts) into LE
+ * 
+ * This creates a situation where the long is split into
+ * two shorts which are stored in BE (high 16 bit short first, low 16 bit short last).
+ * BUT: the shorts are stored as LE
+ * 
+ * This is rarely used because of it's weirdeness, but it is used in CPIO archive format (used in linux kernel bootup)
+ */
+export const pdp_int32 = createType((smartBuf: SmartBuffer): number => {
+    const highShort = smartBuf.readUInt16LE();
+    const lowShort = smartBuf.readUInt16LE();
+    const sign = 1 - ((highShort & 0x8000) >> 15) * 2; // ((highShort & 0x8000) >> 15) * 2 will become 2 if the sign bit is true, otherwise it will become 0
+    return (((highShort & 0x7FFF) << 16) | lowShort) * sign;
+}, function(smartBuf, value){
+    console.log(value);
+    assert(value > -2147483647 && value < 2147483647, new Error("Value must be greather than -2147483647 and smaller than 2147483647"));
+    value = Math.round(value);
+
+    const positiveValue = Math.abs(value);
+    const high = (positiveValue >> 16) | (value < 0 ? 0x8000 : 0); // set the sign bit if the value is smaller than zero
+    const low = positiveValue & 0x0000FFFF;
+    smartBuf.writeUInt16LE(high);
+    smartBuf.writeUInt16LE(low);
+}, "number", 4);
 export { isCountedType };
 
 interface Struct{
